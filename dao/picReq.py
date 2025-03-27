@@ -1,42 +1,11 @@
 
 import os
-import io
-import hashlib
-import hmac
 import time
-import json
 from datetime import datetime
 import requests
+
+import model.header
 import sign
-
-
-class CommonHeader:
-    def __init__(self, content_type, content_accept_type, timestamp, signature_method, signature_version, authorization, nonce, access_key_id, content_md5, access_token):
-        self.ContentType = content_type
-        self.ContentAcceptType = content_accept_type
-        self.Timestamp = timestamp
-        self.SignatureMethod = signature_method
-        self.SignatureVersion = signature_version
-        self.Authorization = authorization
-        self.Nonce = nonce
-        self.AccessKeyId = access_key_id
-        self.ContentMD5 = content_md5
-        self.AccessToken = access_token
-
-    def to_dict(self):
-        return {
-            "Content-Type": self.ContentType,
-            "Content-Accept-Type": self.ContentAcceptType,
-            "Timestamp": self.Timestamp,
-            "Signature-Method": self.SignatureMethod,
-            "Signature-Version": self.SignatureVersion,
-            "Authorization": self.Authorization,
-            "Nonce": self.Nonce,
-            "Access-Key-Id": self.AccessKeyId,
-            "Content-MD5": self.ContentMD5,
-            "Access-Token": self.AccessToken
-        }
-
 
 
 def PicRequest(request_url, pic_url, client_id, access_token, app_secret, version):
@@ -62,7 +31,7 @@ def PicRequest(request_url, pic_url, client_id, access_token, app_secret, versio
         "access-token": access_token
     }
 
-    header_obj = CommonHeader(
+    header_obj = model.header.CommonHeader(
         ContentType=headers["Content-Type"],
         ContentAcceptType="application/json",
         Timestamp=timestamp,
@@ -83,12 +52,5 @@ def PicRequest(request_url, pic_url, client_id, access_token, app_secret, versio
         return None, Exception(f"Request failed with status code {response.status_code}")
 
     return response.json(), None
-
-# 示例调用
-# resp, err = PicRequest("https://example.com/upload", "/path/to/image.jpg", "your_client_id", "your_access_token", "your_app_secret", "1.0")
-# if err is not None:
-#     print(err)
-# else:
-#     print(resp)
 
 

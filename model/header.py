@@ -1,3 +1,5 @@
+import json
+
 # ------------- 用户信息相关 URL -------------
 class USER_INFO:
     ACCOUNT_INFO_URL = "/arcopen/fn/user/account/info"   # 获取用户公开信息 GET
@@ -134,3 +136,70 @@ class IMAGE_UPLOAD:
     IMAGE_UPLOAD_COMMODITY_URL = "https://member.bilibili.com/arcopen/fn/v2/market/commodity/image/upload"
     # 客服图片上传
     IMAGE_UPLOAD_CUSTOMER = "https://member.bilibili.com/arcopen/fn/market/customer/image_upload"
+
+class ModelConstants:
+    ACCEPT_HEADER = "Accept"
+    CONTENT_TYPE_HEADER = "Content-Type"
+    AUTHORIZATION_HEADER = "Authorization"
+    JSON_TYPE = "application/json"
+    HMAC_SHA256 = "HMAC-SHA256"
+    BILI_TIMESTAMP_HEADER = "x-bili-timestamp"
+    BILI_SIGNATURE_METHOD_HEADER = "x-bili-signature-method"
+    BILI_SIGNATURE_NONCE_HEADER = "x-bili-signature-nonce"
+    BILI_ACCESS_KEY_ID_HEADER = "x-bili-accesskeyid"
+    BILI_SIGN_VERSION_HEADER = "x-bili-signature-version"
+    BILI_CONTENT_MD5_HEADER = "x-bili-content-md5"
+    ACCESS_TOKEN = "access-token"
+
+    BILI_VERSION = "1.0"
+    BILI_VERSION_V2 = "2.0"
+
+    METHOD_GET = "GET"
+    METHOD_POST = "POST"
+
+
+class BaseResp:
+    def __init__(self, code: int, message: str, request_id: str, data):
+        self.code = code
+        self.message = message
+        self.request_id = request_id
+        self.data = data
+
+    def to_json(self):
+        return json.dumps(self.__dict__)
+
+
+# 域名
+UAT_MAIN_OPEN_PLATFORM_HTTP_HOST = "https://uat-member.bilibili.com"
+MAIN_OPEN_PLATFORM_HTTP_HOST = "https://member.bilibili.com"
+
+SCENE_CODE = "ARC_APP_SHARE"
+
+
+class CommonHeader:
+    def __init__(
+        self,
+        content_type: str = "",
+        content_accept_type: str = "",
+        timestamp: str = "",
+        signature_method: str = "",
+        signature_version: str = "",
+        authorization: str = "",
+        nonce: str = "",
+        access_key_id: str = "",
+        content_md5: str = "",
+        access_token: str = ""
+    ):
+        self.ContentType = content_type
+        self.ContentAcceptType = content_accept_type
+        self.Timestamp = timestamp
+        self.SignatureMethod = signature_method
+        self.SignatureVersion = signature_version
+        self.Authorization = authorization
+        self.Nonce = nonce
+        self.AccessKeyId = access_key_id
+        self.ContentMD5 = content_md5
+        self.AccessToken = access_token
+
+
+
