@@ -1,80 +1,61 @@
-import hashlib
 import hmac
-import json
-from collections import OrderedDict
+import hashlib
+from typing import Dict
+from model import * # 假设 CommonHeader 定义在 model.py 中
 
-
-def create_signature(header: dict, access_key_secret: str) -> str:
-    """生成Authorization加密串"""
+def create_signature(header: model.CommonHeader, access_key_secret: str) -> str:
+    """生成 Authorization 加密串"""
     s_str = to_sorted_string(header)
     print(f"\n签名:参与加密的字符串:{s_str}")
     return hmac_sha256(access_key_secret, s_str)
 
 
-def md5_encrypt(data: str) -> str:
-    """MD5加密"""
-    print(f"\n签名:参与md5的字符串:{data}")
-    return hashlib.md5(data.encode()).hexdigest()
+def md5(text: str) -> str:
+    """MD5 加密"""
+    print(f"\n签名:参与md5的字符串:{text}")
+    return hashlib.md5(text.encode()).hexdigest()
 
 
 def hmac_sha256(key: str, data: str) -> str:
-    """HMAC-SHA256算法"""
-    key_bytes = key.encode()
-    data_bytes = data.encode()
-    return hmac.new(key_bytes, data_bytes, hashlib.sha256).hexdigest()
+    """HMAC-SHA256 算法"""
+    return hmac.new(
+        key.encode(),
+        data.encode(),
+        hashlib.sha256
+    ).hexdigest()
 
 
-def to_map(header: dict) -> dict:
+def to_map(h: CommonHeader) -> Dict[str, str]:
     """所有字段转字典"""
     return {
-        "X-Bili-Timestamp": header.get("X-Bili-Timestamp"),
-        "X-Bili-Signature-Method": header.get("X-Bili-Signature-Method"),
-        "X-Bili-Signature-Nonce": header.get("X-Bili-Signature-Nonce"),
-        "X-Bili-AccessKey-ID": header.get("X-Bili-AccessKey-ID"),
-        "X-Bili-Sign-Version": header.get("X-Bili-Sign-Version"),
-        "X-Bili-Content-MD5": header.get("X-Bili-Content-MD5"),
-        "Authorization": header.get("Authorization"),
-        "Content-Type": header.get("Content-Type"),
-        "Accept": header.get("Accept"),
-        "X-Bili-AccessToken": header.get("X-Bili-AccessToken"),
+        model.BILI_TIMESTAMP_HEADER: h.timestamp,
+        model.BILI_SIGNATURE_METHOD_HEADER: h.signature_method,
+        model.BILI_SIGNATURE_NONCE_HEADER: h.nonce,
+        model.BILI_ACCESS_KEY_ID_HEADER: h.access_key_id,
+        model.BILI_SIGN_VERSION_HEADER: h.signature_version,
+        model.BILI_CONTENT_MD5_HEADER: h.content_md5,
+        model.AUTHORIZATION_HEADER: h.authorization,
+        model.CONTENT_TYPE_HEADER: h.content_type,
+        model.ACCEPT_HEADER: h.content_accept_type,
+        model.ACCESS_TOKEN: h.access_token,
     }
 
 
-def to_sort_map(header: dict) -> dict:
+def to_sort_map(h: CommonHeader) -> Dict[str, str]:
     """参与加密的字段转字典"""
     return {
-        "X-Bili-Timestamp": header.get("X-Bili-Timestamp"),
-        "X-Bili-Signature-Method": header.get("X-Bili-Signature-Method"),
-        "X-Bili-Signature-Nonce": header.get("X-Bili-Signature-Nonce"),
-        "X-Bili-AccessKey-ID": header.get("X-Bili-AccessKey-ID"),
-        "X-Bili-Sign-Version": header.get("X-Bili-Sign-Version"),
-        "X-Bili-Content-MD5": header.get("X-Bili-Content-MD5"),
+        model.BILI_TIMESTAMP_HEADER: h.timestamp,
+        model.BILI_SIGNATURE_METHOD_HEADER: h.signature_method,
+        model.BILI_SIGNATURE_NONCE_HEADER: h.nonce,
+        model.BILI_ACCESS_KEY_ID_HEADER: h.access_key_id,
+        model.BILI_SIGN_VERSION_HEADER: h.signature_version,
+        model.BILI_CONTENT_MD5_HEADER: h.content_md5,
     }
 
 
-def to_sorted_string(header: dict) -> str:
-    """生成需要加密的文本"""
-    sorted_map = OrderedDict(sorted(to_sort_map(header).items()))
-    sign_str = '\n'.join([f"{k}:{v}" for k, v in sorted_map.items()])
-    return sign_str.rstrip('\n')
-
-
-# 示例用法
-if __name__ == "__main__":
-    # 示例请求头
-    headers = {
-        "X-Bili-Timestamp": "1638508800",
-        "X-Bili-Signature-Method": "HMAC-SHA256",
-        "X-Bili-Signature-Nonce": "123456",
-        "X-Bili-AccessKey-ID": "AKIDEXAMPLE",
-        "X-Bili-Sign-Version": "1.0",
-        "X-Bili-Content-MD5": "d41d8cd98f00b204e9800998ecf8427e",
-        "Authorization": "",
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "X-Bili-AccessToken": "token123"
-    }
-    access_key_secret = "YOUR_ACCESS_KEY_SECRET"
-
-    signature = create_signature(headers, access_key_secret)
-    print(f"生成的签名: {signature}")
+def to_sorted_string(h: CommonHeader) -> str:
+    """生成需要加密的文本（按键排序）"""
+    h_map = to_sort_map(h)
+    sorted_keys = sorted(h_map.keys())  # 按键排序
+    sign_parts = [f"{k}:{v}" for k, v in sorted((k, h_map[k]) for k in sorted_keys)]
+    return "\n".join(sign_parts)

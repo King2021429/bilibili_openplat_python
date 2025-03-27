@@ -7,6 +7,7 @@ import time
 import json
 from datetime import datetime
 import requests
+import sign
 
 
 class CommonHeader:
@@ -36,6 +37,8 @@ class CommonHeader:
             "Access-Token": self.AccessToken
         }
 
+
+
 def PicRequest(request_url, pic_url, client_id, access_token, app_secret, version):
     with open(pic_url, 'rb') as f:
         files = {'file': (os.path.basename(pic_url), f)}
@@ -46,7 +49,7 @@ def PicRequest(request_url, pic_url, client_id, access_token, app_secret, versio
 
     timestamp = str(int(time.time()))
     nonce = str(int(datetime.now().timestamp() * 1e9))
-    body_str_mds = Md5("")
+    body_str_mds = sign.md5("")
 
     headers = {
         "Accept": "application/json",
@@ -72,7 +75,7 @@ def PicRequest(request_url, pic_url, client_id, access_token, app_secret, versio
         AccessToken=access_token
     )
 
-    headers["Authorization"] = CreateSignature(header_obj.to_dict(), app_secret)
+    headers["Authorization"] = sign.create_signature(header_obj.to_dict(), app_secret)
 
     response = requests.post(request_url, files=files, data=data, headers=headers)
     if response.status_code != 200:
