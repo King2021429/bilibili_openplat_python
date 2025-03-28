@@ -1,14 +1,19 @@
-
 import requests
 import json
 import hashlib
 import time
 import urllib.parse
 
+from service import arc, article, customer, image_upload, music, share, shop, signAndOuath, stock, user
+
+
+
+
 # 定义常量
 BILI_VERSION_V2 = "v2"
 JSON_TYPE = "application/json"
 HMAC_SHA256 = "HMAC-SHA256"
+
 
 # 构建 URL 参数的函数
 def build_url(base_url, params):
@@ -18,9 +23,11 @@ def build_url(base_url, params):
     url_parts[4] = urllib.parse.urlencode(query)
     return urllib.parse.urlunparse(url_parts)
 
+
 # 计算 MD5
 def md5(text):
     return hashlib.md5(text.encode()).hexdigest()
+
 
 # 进行 API 请求
 def api_request(req_json, url, method, client_id, access_token, app_secret, version):
@@ -34,153 +41,6 @@ def api_request(req_json, url, method, client_id, access_token, app_secret, vers
         response = requests.get(url, params=json.loads(req_json), headers=headers)
     return response.json()
 
-# 稿件列表查询
-def arc_view_list(client_id, access_token, app_secret, req_json):
-    url = "ArcViewList"  # 需要替换为实际的 URL
-    return api_request(req_json, url, "POST", client_id, access_token, app_secret, BILI_VERSION_V2)
-
-# 售后列表查询
-def after_sale_query_list(client_id, access_token, app_secret, req_json):
-    url = "AfterSaleQueryList"  # 需要替换为实际的 URL
-    return api_request(req_json, url, "GET", client_id, access_token, app_secret, BILI_VERSION_V2)
-
-# 文章删除
-def article_delete(client_id, access_token, app_secret, req_json):
-    url = "ArticleDelete"  # 需要替换为实际的 URL
-    return api_request(req_json, url, "POST", client_id, access_token, app_secret, BILI_VERSION_V2)
-
-# 库存查询
-def stock_query(client_id, access_token, app_secret):
-    url = "StockQuery"  # 需要替换为实际的 URL
-    resp = api_request("", url, "GET", client_id, access_token, app_secret, BILI_VERSION_V2)
-    return resp
-
-# 库存更新
-def stock_update(client_id, access_token, app_secret):
-    url = "StockUpdate"  # 需要替换为实际的 URL
-    query_req = {}
-    query_req_json = json.dumps(query_req)
-    resp = api_request(query_req_json, url, "POST", client_id, access_token, app_secret, BILI_VERSION_V2)
-    return resp
-
-# 文件上传预处理
-def video_init(client_id, access_token, app_secret):
-    url = "ArcInitUrl"  # 需要替换为实际的 URL
-    video_init_req = {
-        "Name": "test.mp4",
-        "Utype": "0"
-    }
-    video_init_req_json = json.dumps(video_init_req)
-    resp = api_request(video_init_req_json, url, "POST", client_id, access_token, app_secret, BILI_VERSION_V2)
-    return resp
-
-# 文件分片合片
-def video_arc_complete(client_id, access_token, app_secret):
-    url = "ArcComplete"  # 需要替换为实际的 URL
-    resp = api_request("", url, "POST", client_id, access_token, app_secret, BILI_VERSION_V2)
-    return resp
-
-# 稿件提交 POST
-def arc_add_url(client_id, access_token, app_secret, req_json):
-    url = "ArcAddUrl"  # 需要替换为实际的 URL
-    return api_request(req_json, url, "POST", client_id, access_token, app_secret, BILI_VERSION_V2)
-
-# 稿件提交fetch模式
-def arc_add_fetch(client_id, access_token, app_secret, req_json):
-    url = "ArcAddFetch"  # 需要替换为实际的 URL
-    return api_request(req_json, url, "POST", client_id, access_token, app_secret, BILI_VERSION_V2)
-
-# 稿件编辑
-def arc_edit(client_id, access_token, app_secret, req_json):
-    url = "ArcEdit"  # 需要替换为实际的 URL
-    return api_request(req_json, url, "POST", client_id, access_token, app_secret, BILI_VERSION_V2)
-
-# 稿件删除
-def arc_del(client_id, access_token, app_secret, req_json):
-    url = "ArcDel"  # 需要替换为实际的 URL
-    return api_request(req_json, url, "POST", client_id, access_token, app_secret, BILI_VERSION_V2)
-
-# 稿件查询
-def arc_view(client_id, access_token, app_secret, req_json):
-    url = "ArcView"  # 需要替换为实际的 URL
-    return api_request(req_json, url, "POST", client_id, access_token, app_secret, BILI_VERSION_V2)
-
-# 文章编辑
-def article_edit(client_id, access_token, app_secret, req_json):
-    url = "ArticleEdit"  # 需要替换为实际的 URL
-    return api_request(req_json, url, "POST", client_id, access_token, app_secret, BILI_VERSION_V2)
-
-# 批量查询地址库列表
-def address_list(client_id, access_token, app_secret, req_json):
-    url = "AddressList"  # 需要替换为实际的 URL
-    return api_request(req_json, url, "GET", client_id, access_token, app_secret, BILI_VERSION_V2)
-
-# 客服系统 消息发送
-def conversation_send_msg(client_id, access_token, app_secret, req_json):
-    url = "ConversationSendMsgUrl"  # 需要替换为实际的 URL
-    query_req = {
-        "MsgType": 1,
-        "ConversationId": 115957154487296,
-        "Msg": '{"content":"888"}',
-        "UserOpenId": ""
-    }
-    query_req_json = json.dumps(query_req)
-    resp = api_request(query_req_json, url, "POST", client_id, access_token, app_secret, BILI_VERSION_V2)
-    return resp
-
-# 客服系统 获取用户来源
-def conversation_customer_user_from(client_id, access_token, app_secret, req_json):
-    url = "ConversationCustomerUserFrom"  # 需要替换为实际的 URL
-    return api_request(req_json, url, "GET", client_id, access_token, app_secret, BILI_VERSION_V2)
-
-# 客服系统 修改客服状态
-def conversation_staff_status_update(client_id, access_token, app_secret, req_json):
-    url = "ConversationStaffStatusUpdate"  # 需要替换为实际的 URL
-    return api_request(req_json, url, "POST", client_id, access_token, app_secret, BILI_VERSION_V2)
-
-# 客服系统 关闭
-def conversation_close(client_id, access_token, app_secret, req_json):
-    url = "ConversationClose"  # 需要替换为实际的 URL
-    return api_request(req_json, url, "POST", client_id, access_token, app_secret, BILI_VERSION_V2)
-
-# 签名计算
-def sign(client_id, access_token, app_secret):
-    req_json = input("请输入reqJson串: ")
-    version = input("请输入version: ")
-    timestamp = str(int(time.time()))
-    nonce = str(time.time_ns())
-    content_md5 = md5(req_json)
-    header = {
-        "ContentType": JSON_TYPE,
-        "ContentAcceptType": JSON_TYPE,
-        "Timestamp": timestamp,
-        "SignatureMethod": HMAC_SHA256,
-        "SignatureVersion": version,
-        "Authorization": "",
-        "Nonce": nonce,
-        "AccessKeyId": client_id,
-        "ContentMD5": content_md5,
-        "AccessToken": access_token
-    }
-    # 这里需要实现签名计算逻辑
-    header["Authorization"] = ""
-    print(f"\n请求头:{header}")
-    return
-
-# 获取授权
-def oauth(client_id, app_secret):
-    base_url = "https://api.bilibili.com/x/account-oauth2/v1/token"
-    code = input("请输入 code: ")
-    params = {
-        "client_id": client_id,
-        "client_secret": app_secret,
-        "grant_type": "authorization_code",
-        "code": code
-    }
-    full_url = build_url(base_url, params)
-    print("Full URL:", full_url)
-    response = requests.post(full_url)
-    print(response.text)
 
 # 入口启动函数
 def main():
@@ -262,44 +122,199 @@ def main():
     input_choice = input()
 
     if input_choice == "0":
-        sign(client_id, access_token, app_secret)
+        signAndOuath.Sign(client_id, access_token, app_secret)
     elif input_choice == "1":
-        oauth(client_id, app_secret)
+        signAndOuath.Oauth(client_id, app_secret)
+    elif input_choice == "2":
+        user.AccountInfo(client_id, access_token, app_secret)
+    elif input_choice == "3":
+        user.AccountScope(client_id, access_token, app_secret)
     elif input_choice == "4":
-        video_init(client_id, access_token, app_secret)
+        arc.VideoInit(client_id, access_token, app_secret)
     elif input_choice == "7":
-        video_arc_complete(client_id, access_token, app_secret)
+        arc.VideoArcComplete(client_id, access_token, app_secret)
     elif input_choice == "8":
-        arc_add_url(client_id, access_token, app_secret, "")
+        arc.ArcAddUrl(client_id, access_token, app_secret, "")
+    elif input_choice == "9":
+        share.common_add_share(client_id, access_token, app_secret, "")
     elif input_choice == "10":
-        arc_view(client_id, access_token, app_secret, "")
+        arc.ArcView(client_id, access_token, app_secret, "")
     elif input_choice == "11":
-        arc_view_list(client_id, access_token, app_secret, "")
+        arc.ArcViewList(client_id, access_token, app_secret, "")
+    elif input_choice == "12":
+        req_json = ""
+        article.article_add(client_id, access_token, app_secret, req_json)
     elif input_choice == "13":
-        article_edit(client_id, access_token, app_secret, "")
+        req_json = ""
+        article.article_edit(client_id, access_token, app_secret, req_json)
     elif input_choice == "14":
-        article_delete(client_id, access_token, app_secret, "")
+        req_json = ""
+        article.article_delete(client_id, access_token, app_secret, req_json)
+    elif input_choice == "15":
+        req_json = ""
+        article.article_detail(client_id, access_token, app_secret, req_json)
+    elif input_choice == "16":
+        req_json = ""
+        article.article_list(client_id, access_token, app_secret, req_json)
+    elif input_choice == "17":
+        req_json = ""
+        article.article_categories(client_id, access_token, app_secret, req_json)
+    elif input_choice == "18":
+        req_json = ""
+        article.article_card(client_id, access_token, app_secret, req_json)
+    elif input_choice == "19":
+        req_json = ""
+        article.anthology_add(client_id, access_token, app_secret, req_json)
+    elif input_choice == "20":
+        req_json = ""
+        article.anthology_edit(client_id, access_token, app_secret, req_json)
+    elif input_choice == "21":
+        req_json = ""
+        article.article_belong(client_id, access_token, app_secret, req_json)
+    elif input_choice == "22":
+        req_json = ""
+        article.article_delete(client_id, access_token, app_secret, req_json)
+    elif input_choice == "23":
+        req_json = ""
+        article.anthology_list(client_id, access_token, app_secret, req_json)
+    elif input_choice == "24":
+        req_json = ""
+        article.anthology_detail(client_id, access_token, app_secret, req_json)
+    elif input_choice == "26":
+        req_json = ""
+        data.UserData(client_id, access_token, app_secret, req_json)
+    elif input_choice == "27":
+        req_json = ""
+        service.ArcStat(client_id, access_token, app_secret, req_json)
+    elif input_choice == "28":
+        req_json = ""
+        service.ArcIncStats(client_id, access_token, app_secret, req_json)
+    elif input_choice == "29":
+        req_json = ""
+        service.ArtStat(client_id, access_token, app_secret, req_json)
+    elif input_choice == "30":
+        req_json = ""
+        service.ArtIncStats(client_id, access_token, app_secret, req_json)
+    elif input_choice == "31":
+        req_json = ""
+        service.ShopInfoGetUrl(client_id, access_token, app_secret, req_json)
+    elif input_choice == "32":
+        req_json = ""
+        service.ProductAdd(client_id, access_token, app_secret, req_json)
+    elif input_choice == "33":
+        req_json = ""
+        service.ProductEdit(client_id, access_token, app_secret, req_json)
+    elif input_choice == "34":
+        req_json = ""
+        service.ProductDel(client_id, access_token, app_secret, req_json)
+    elif input_choice == "35":
+        req_json = ""
+        service.CommodityItemList(client_id, access_token, app_secret, req_json)
+    elif input_choice == "36":
+        req_json = ""
+        service.ProductDetail(client_id, access_token, app_secret, req_json)
+    elif input_choice == "37":
+        req_json = ""
+        service.ProductGetPublishRule(client_id, access_token, app_secret, req_json)
+    elif input_choice == "38":
+        req_json = ""
+        service.ProductGetCateProperty(client_id, access_token, app_secret, req_json)
+    elif input_choice == "39":
+        req_json = ""
+        service.CommodityCategoryQualifiedList(client_id, access_token, app_secret, req_json)
+    elif input_choice == "40":
+        req_json = ""
+        service.OrderSearchList(client_id, access_token, app_secret, req_json)
+    elif input_choice == "41":
+        req_json = ""
+        service.OrderDetail(client_id, access_token, app_secret, req_json)
+    elif input_choice == "42":
+        req_json = ""
+        service.OrderBatchDecrypt(client_id, access_token, app_secret, req_json)
+    elif input_choice == "43":
+        req_json = ""
+        service.OrderReview(client_id, access_token, app_secret, req_json)
+    elif input_choice == "44":
+        req_json = ""
+        service.OrderRemark(client_id, access_token, app_secret, req_json)
+    elif input_choice == "45":
+        req_json = ""
+        service.LogisticsAdd(client_id, access_token, app_secret, req_json)
+    elif input_choice == "46":
+        req_json = ""
+        service.LogisticsEdit(client_id, access_token, app_secret, req_json)
+    elif input_choice == "47":
+        req_json = ""
+        service.LogisticsCompanyList(client_id, access_token, app_secret, req_json)
+    elif input_choice == "48":
+        req_json = ""
+        service.AddressCreate(client_id, access_token, app_secret, req_json)
     elif input_choice == "49":
-        address_list(client_id, access_token, app_secret, "")
+        req_json = ""
+        service.AddressList(client_id, access_token, app_secret, req_json)
+    elif input_choice == "50":
+        req_json = ""
+        service.AddressGetProvince(client_id, access_token, app_secret, req_json)
+    elif input_choice == "51":
+        req_json = ""
+        service.AddressGetAreasByProvince(client_id, access_token, app_secret, req_json)
+    elif input_choice == "52":
+        req_json = ""
+        service.LogisticsFreightTemplateList(client_id, access_token, app_secret, req_json)
     elif input_choice == "53":
-        after_sale_query_list(client_id, access_token, app_secret, "")
+        req_json = ""
+        service.AfterSaleQueryList(client_id, access_token, app_secret, req_json)
+    elif input_choice == "54":
+        req_json = ""
+        service.AfterSaleQueryDetail(client_id, access_token, app_secret, req_json)
+    elif input_choice == "55":
+        req_json = ""
+        service.AfterSaleCheckAfterSale(client_id, access_token, app_secret, req_json)
+    elif input_choice == "56":
+        req_json = ""
+        service.AfterSaleConfirmReceipt(client_id, access_token, app_secret, req_json)
+    elif input_choice == "57":
+        req_json = ""
+        service.AfterSaleBarterShip(client_id, access_token, app_secret, req_json)
+    elif input_choice == "58":
+        req_json = ""
+        service.AfterSaleStop(client_id, access_token, app_secret, req_json)
     elif input_choice == "59":
-        stock_query(client_id, access_token, app_secret)
+        service.StockQuery(client_id, access_token, app_secret)
     elif input_choice == "60":
-        stock_update(client_id, access_token, app_secret)
+        service.StockUpdate(client_id, access_token, app_secret)
     elif input_choice == "61":
-        conversation_send_msg(client_id, access_token, app_secret, "")
+        service.ConversationSendMsg(client_id, access_token, app_secret, "")
     elif input_choice == "62":
-        conversation_customer_user_from(client_id, access_token, app_secret, "")
+        service.ConversationCustomerUserFrom(client_id, access_token, app_secret, "")
     elif input_choice == "63":
-        conversation_staff_status_update(client_id, access_token, app_secret, "")
+        service.ConversationStaffStatusUpdate(client_id, access_token, app_secret, "")
     elif input_choice == "64":
-        conversation_close(client_id, access_token, app_secret, "")
+        service.ConversationClose(client_id, access_token, app_secret, "")
+    elif input_choice == "65":
+        service.MusicMetaList(client_id, access_token, app_secret, "")
+    elif input_choice == "66":
+        service.MusicList(client_id, access_token, app_secret, "")
+    elif input_choice == "67":
+        service.MusicSearch(client_id, access_token, app_secret, "")
+    elif input_choice == "68":
+        pic_url = ""
+        service.ImageUploadArc(pic_url, client_id, access_token, app_secret)
+    elif input_choice == "69":
+        pic_url = ""
+        service.ImageUploadArticle(pic_url, client_id, access_token, app_secret)
+    elif input_choice == "70":
+        pic_url = ""
+        service.ImageUploadCommodity(pic_url, client_id, access_token, app_secret)
+    elif input_choice == "71":
+        pic_url = ""
+        service.ImageUploadCustomer(pic_url, client_id, access_token, app_secret)
     elif input_choice == "q":
         print("退出程序")
         return
     else:
         print("无效的命令，请重新输入")
+
 
 if __name__ == "__main__":
     main()
