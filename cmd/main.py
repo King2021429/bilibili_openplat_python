@@ -3,42 +3,7 @@ import json
 import hashlib
 import time
 import urllib.parse
-
 from service import arc, article, customer, image_upload, music, share, shop, signAndOuath, stock, user, data
-
-# 定义常量
-BILI_VERSION_V2 = "v2"
-JSON_TYPE = "application/json"
-HMAC_SHA256 = "HMAC-SHA256"
-
-
-# 构建 URL 参数的函数
-def build_url(base_url, params):
-    url_parts = list(urllib.parse.urlparse(base_url))
-    query = dict(urllib.parse.parse_qsl(url_parts[4]))
-    query.update(params)
-    url_parts[4] = urllib.parse.urlencode(query)
-    return urllib.parse.urlunparse(url_parts)
-
-
-# 计算 MD5
-def md5(text):
-    return hashlib.md5(text.encode()).hexdigest()
-
-
-# 进行 API 请求
-def api_request(req_json, url, method, client_id, access_token, app_secret, version):
-    headers = {
-        "Content-Type": JSON_TYPE,
-        "Accept": JSON_TYPE
-    }
-    if method == "POST":
-        response = requests.post(url, data=req_json, headers=headers)
-    elif method == "GET":
-        response = requests.get(url, params=json.loads(req_json), headers=headers)
-    return response.json()
-
-
 # 入口启动函数
 def main():
     client_id = input("请输入 client_id: ")
