@@ -4,10 +4,7 @@ import hashlib
 import time
 import urllib.parse
 
-from service import arc, article, customer, image_upload, music, share, shop, signAndOuath, stock, user
-
-
-
+from service import arc, article, customer, image_upload, music, share, shop, signAndOuath, stock, user, data
 
 # 定义常量
 BILI_VERSION_V2 = "v2"
@@ -185,130 +182,130 @@ def main():
         data.UserData(client_id, access_token, app_secret, req_json)
     elif input_choice == "27":
         req_json = ""
-        service.ArcStat(client_id, access_token, app_secret, req_json)
+        data.ArcStat(client_id, access_token, app_secret, req_json)
     elif input_choice == "28":
         req_json = ""
-        service.ArcIncStats(client_id, access_token, app_secret, req_json)
+        data.ArcIncStats(client_id, access_token, app_secret, req_json)
     elif input_choice == "29":
         req_json = ""
-        service.ArtStat(client_id, access_token, app_secret, req_json)
+        data.ArtStat(client_id, access_token, app_secret, req_json)
     elif input_choice == "30":
         req_json = ""
-        service.ArtIncStats(client_id, access_token, app_secret, req_json)
+        data.ArtIncStats(client_id, access_token, app_secret, req_json)
     elif input_choice == "31":
         req_json = ""
-        service.ShopInfoGetUrl(client_id, access_token, app_secret, req_json)
+        shop.shop_info_get_url(client_id, access_token, app_secret, req_json)
     elif input_choice == "32":
         req_json = ""
-        service.ProductAdd(client_id, access_token, app_secret, req_json)
+        shop.product_add(client_id, access_token, app_secret, req_json)
     elif input_choice == "33":
         req_json = ""
-        service.ProductEdit(client_id, access_token, app_secret, req_json)
+        shop.product_edit(client_id, access_token, app_secret, req_json)
     elif input_choice == "34":
         req_json = ""
-        service.ProductDel(client_id, access_token, app_secret, req_json)
+        shop.product_del(client_id, access_token, app_secret, req_json)
     elif input_choice == "35":
         req_json = ""
-        service.CommodityItemList(client_id, access_token, app_secret, req_json)
+        shop.commodity_item_list(client_id, access_token, app_secret, req_json)
     elif input_choice == "36":
         req_json = ""
-        service.ProductDetail(client_id, access_token, app_secret, req_json)
+        shop.product_detail(client_id, access_token, app_secret, req_json)
     elif input_choice == "37":
         req_json = ""
-        service.ProductGetPublishRule(client_id, access_token, app_secret, req_json)
+        shop.product_get_publish_rule(client_id, access_token, app_secret, req_json)
     elif input_choice == "38":
         req_json = ""
-        service.ProductGetCateProperty(client_id, access_token, app_secret, req_json)
+        shop.product_get_cate_property(client_id, access_token, app_secret, req_json)
     elif input_choice == "39":
         req_json = ""
-        service.CommodityCategoryQualifiedList(client_id, access_token, app_secret, req_json)
+        shop.commodity_category_qualified_list(client_id, access_token, app_secret, req_json)
     elif input_choice == "40":
         req_json = ""
-        service.OrderSearchList(client_id, access_token, app_secret, req_json)
+        shop.order_search_list(client_id, access_token, app_secret, req_json)
     elif input_choice == "41":
         req_json = ""
-        service.OrderDetail(client_id, access_token, app_secret, req_json)
+        shop.order_detail(client_id, access_token, app_secret, req_json)
     elif input_choice == "42":
         req_json = ""
-        service.OrderBatchDecrypt(client_id, access_token, app_secret, req_json)
+        shop.order_batch_decrypt(client_id, access_token, app_secret, req_json)
     elif input_choice == "43":
         req_json = ""
-        service.OrderReview(client_id, access_token, app_secret, req_json)
+        shop.order_review(client_id, access_token, app_secret, req_json)
     elif input_choice == "44":
         req_json = ""
-        service.OrderRemark(client_id, access_token, app_secret, req_json)
+        shop.order_remark(client_id, access_token, app_secret, req_json)
     elif input_choice == "45":
         req_json = ""
-        service.LogisticsAdd(client_id, access_token, app_secret, req_json)
+        shop.logistics_add(client_id, access_token, app_secret, req_json)
     elif input_choice == "46":
         req_json = ""
-        service.LogisticsEdit(client_id, access_token, app_secret, req_json)
+        shop.logistics_edit(client_id, access_token, app_secret, req_json)
     elif input_choice == "47":
         req_json = ""
-        service.LogisticsCompanyList(client_id, access_token, app_secret, req_json)
+        shop.logistics_company_list(client_id, access_token, app_secret, req_json)
     elif input_choice == "48":
         req_json = ""
-        service.AddressCreate(client_id, access_token, app_secret, req_json)
+        shop.address_create(client_id, access_token, app_secret, req_json)
     elif input_choice == "49":
         req_json = ""
-        service.AddressList(client_id, access_token, app_secret, req_json)
+        shop.address_list(client_id, access_token, app_secret, req_json)
     elif input_choice == "50":
         req_json = ""
-        service.AddressGetProvince(client_id, access_token, app_secret, req_json)
+        shop.address_get_province(client_id, access_token, app_secret, req_json)
     elif input_choice == "51":
         req_json = ""
-        service.AddressGetAreasByProvince(client_id, access_token, app_secret, req_json)
+        shop.address_get_areas_by_province(client_id, access_token, app_secret, req_json)
     elif input_choice == "52":
         req_json = ""
-        service.LogisticsFreightTemplateList(client_id, access_token, app_secret, req_json)
+        shop.logistics_freight_template_list(client_id, access_token, app_secret, req_json)
     elif input_choice == "53":
         req_json = ""
-        service.AfterSaleQueryList(client_id, access_token, app_secret, req_json)
+        shop.after_sale_query_list(client_id, access_token, app_secret, req_json)
     elif input_choice == "54":
         req_json = ""
-        service.AfterSaleQueryDetail(client_id, access_token, app_secret, req_json)
+        shop.after_sale_query_detail(client_id, access_token, app_secret, req_json)
     elif input_choice == "55":
         req_json = ""
-        service.AfterSaleCheckAfterSale(client_id, access_token, app_secret, req_json)
+        shop.after_sale_check_after_sale(client_id, access_token, app_secret, req_json)
     elif input_choice == "56":
         req_json = ""
-        service.AfterSaleConfirmReceipt(client_id, access_token, app_secret, req_json)
+        shop.after_sale_confirm_receipt(client_id, access_token, app_secret, req_json)
     elif input_choice == "57":
         req_json = ""
-        service.AfterSaleBarterShip(client_id, access_token, app_secret, req_json)
+        shop.after_sale_barter_ship(client_id, access_token, app_secret, req_json)
     elif input_choice == "58":
         req_json = ""
-        service.AfterSaleStop(client_id, access_token, app_secret, req_json)
+        shop.after_sale_stop(client_id, access_token, app_secret, req_json)
     elif input_choice == "59":
-        service.StockQuery(client_id, access_token, app_secret)
+        stock.StockQuery(client_id, access_token, app_secret)
     elif input_choice == "60":
-        service.StockUpdate(client_id, access_token, app_secret)
+        stock.StockUpdate(client_id, access_token, app_secret)
     elif input_choice == "61":
-        service.ConversationSendMsg(client_id, access_token, app_secret, "")
+        customer.conversation_send_msg(client_id, access_token, app_secret, "")
     elif input_choice == "62":
-        service.ConversationCustomerUserFrom(client_id, access_token, app_secret, "")
+        customer.conversation_customer_user_from(client_id, access_token, app_secret, "")
     elif input_choice == "63":
-        service.ConversationStaffStatusUpdate(client_id, access_token, app_secret, "")
+        customer.conversation_staff_status_update(client_id, access_token, app_secret, "")
     elif input_choice == "64":
-        service.ConversationClose(client_id, access_token, app_secret, "")
+        customer.conversation_close(client_id, access_token, app_secret, "")
     elif input_choice == "65":
-        service.MusicMetaList(client_id, access_token, app_secret, "")
+        music.music_meta_list(client_id, access_token, app_secret, "")
     elif input_choice == "66":
-        service.MusicList(client_id, access_token, app_secret, "")
+        music.music_list(client_id, access_token, app_secret, "")
     elif input_choice == "67":
-        service.MusicSearch(client_id, access_token, app_secret, "")
+        music.music_search(client_id, access_token, app_secret, "")
     elif input_choice == "68":
         pic_url = ""
-        service.ImageUploadArc(pic_url, client_id, access_token, app_secret)
+        image_upload.image_upload_arc(pic_url, client_id, access_token, app_secret)
     elif input_choice == "69":
         pic_url = ""
-        service.ImageUploadArticle(pic_url, client_id, access_token, app_secret)
+        image_upload.image_upload_article(pic_url, client_id, access_token, app_secret)
     elif input_choice == "70":
         pic_url = ""
-        service.ImageUploadCommodity(pic_url, client_id, access_token, app_secret)
+        image_upload.image_upload_commodity(pic_url, client_id, access_token, app_secret)
     elif input_choice == "71":
         pic_url = ""
-        service.ImageUploadCustomer(pic_url, client_id, access_token, app_secret)
+        image_upload.image_upload_customer(pic_url, client_id, access_token, app_secret)
     elif input_choice == "q":
         print("退出程序")
         return
