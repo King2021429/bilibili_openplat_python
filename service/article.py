@@ -1,15 +1,28 @@
+from dao.article_add import ArticleAdd
 from dao.request import api_request
 from model.header import (
     ATC_BASE,
-    ModelConstants
+    ModelConstants, BaseResp
 )
 
 
-# 文章投稿
-def article_add(client_id, access_token, app_secret, req_json):
+
+def article_add(client_id: str, access_token: str, app_secret: str) -> BaseResp:
+    """
+    文章投稿
+    :param client_id: 客户端ID
+    :param access_token: 访问令牌
+    :param app_secret: 应用密钥
+    :return: 基础响应对象
+    """
     url = ATC_BASE.ARTICLE_ADD_URL
-    return api_request(req_json, url, ModelConstants.METHOD_POST, client_id, access_token, app_secret,
-                       ModelConstants.BILI_VERSION_V2)
+    return ArticleAdd(
+        requestUrl=url,
+        clientId=client_id,
+        accessToken=access_token,
+        appSecret=app_secret,
+        version=ModelConstants.BILI_VERSION_V2
+    )
 
 
 # 文章编辑
