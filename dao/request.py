@@ -4,7 +4,7 @@ import hashlib
 import requests
 from typing import Dict, Any
 from dao.sign import create_signature, md5  # 假设签名相关函数在 dao/sign.py 中
-from model.header import *  # 调整实际导入路径
+from model.header import MAIN_OPEN_PLATFORM_HTTP_HOST,ModelConstants,CommonHeader # 调整实际导入路径
 
 
 def api_request(
@@ -33,10 +33,10 @@ def api_request(
     content_md5 = md5(req_json)
 
     header = CommonHeader(
-        ContentType=ModelConstants.JsonType,
-        ContentAcceptType=ModelConstants.JsonType,
+        ContentType=ModelConstants.JSON_TYPE,
+        ContentAcceptType=ModelConstants.JSON_TYPE,
         Timestamp=timestamp,
-        SignatureMethod=ModelConstants.HmacSha256,
+        SignatureMethod=ModelConstants.HMAC_SHA256,
         SignatureVersion=version,
         Nonce=nonce,
         AccessKeyId=client_id,
@@ -60,7 +60,7 @@ def api_request(
         }
     }
 
-    full_url = f"{header.UatMainOpenPlatformHttpHost}{request_url}"
+    full_url = f"{MAIN_OPEN_PLATFORM_HTTP_HOST}{request_url}"
     print(f"\n请求url:{full_url}")
     print(f"\n请求头:{headers}")
 
