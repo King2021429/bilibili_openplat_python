@@ -33,21 +33,21 @@ def api_request(
     content_md5 = md5(req_json)
 
     header = CommonHeader(
-        ContentType=ModelConstants.JSON_TYPE,
-        ContentAcceptType=ModelConstants.JSON_TYPE,
-        Timestamp=timestamp,
-        SignatureMethod=ModelConstants.HMAC_SHA256,
-        SignatureVersion=version,
-        Nonce=nonce,
-        AccessKeyId=client_id,
-        ContentMD5=content_md5,
-        AccessToken=access_token
+        content_type=ModelConstants.JSON_TYPE,
+        content_accept_type=ModelConstants.JSON_TYPE,
+        timestamp=timestamp,
+        signature_method=ModelConstants.HMAC_SHA256,
+        signature_version=version,
+        nonce=nonce,
+        access_key_id=client_id,
+        content_md5=content_md5,
+        access_token=access_token
     )
     header.Authorization = create_signature(header, app_secret)
 
     # 构造请求
     headers = {
-        "Content-Type": header.JsonType,
+        "Content-Type":ModelConstants.JSON_TYPE,
         **{
             "x-bili-timestamp": header.Timestamp,
             "x-bili-signature-method": header.SignatureMethod,

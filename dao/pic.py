@@ -23,15 +23,15 @@ def PicRequest(requestUrl, picUrl, clientId, accessToken, appSecret, version):
 
     # 创建请求头
     header = CommonHeader(
-        ContentType="multipart/form-data",
-        ContentAcceptType=ModelConstants.JSON_TYPE,
-        Timestamp=timestamp,
-        SignatureMethod=ModelConstants.HMAC_SHA256,
-        SignatureVersion=version,
-        Nonce=nonce,
-        AccessKeyId=clientId,
-        ContentMD5=bodyStrMds,
-        AccessToken=accessToken
+        content_type="multipart/form-data",
+        content_accept_type=ModelConstants.JSON_TYPE,
+        timestamp=timestamp,
+        signature_method=ModelConstants.HMAC_SHA256,
+        signature_version=version,
+        nonce=nonce,
+        access_key_id=clientId,
+        content_md5=bodyStrMds,
+        access_token=accessToken
     )
 
     # 计算签名
